@@ -32,5 +32,6 @@ ehthumbs.db
 sysinfo.txt
 *.stackdump
 .vs
+.vscode/
 Temp/
 Library/
