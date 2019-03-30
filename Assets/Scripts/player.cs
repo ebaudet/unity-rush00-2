@@ -18,6 +18,7 @@ public class player : MonoBehaviour {
     private Vector3 cameraDif;
     private Vector3 direction;
     private GameObject weapon_collision;
+    private Collider2D take = null;
 
 	// Use this for initialization
 	void Start () {
@@ -36,9 +37,13 @@ public class player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
+        else if (weapon && Input.GetMouseButtonDown(0))
+            weapon.gameObject.GetComponent<Weapon>().fire(transform.position, transform.rotation);
+                
         vertical = 0;
         horizontal = 0;
         if (Input.GetKey(KeyCode.S))
@@ -56,14 +61,17 @@ public class player : MonoBehaviour {
         }
         direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction.z = transform.position.z;
+        if (take != null)
+            take_weapon();
 	}
 
 	private void FixedUpdate()
 	{
-        gameObject.GetComponentInChildren<SpriteRenderer>().transform.up = gameObject.GetComponentInChildren<SpriteRenderer>().transform.position - direction;
+        SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        float angle = Mathf.Atan2(direction.y - currentSprite.transform.position.y, direction.x - currentSprite.transform.position.x) * Mathf.Rad2Deg;
+        angle += 90;
+        currentSprite.transform.rotation = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
 	}
-
-
 
     private void drop_weapon()
     {
@@ -77,19 +85,12 @@ public class player : MonoBehaviour {
 
     }
 
-
-	private void OnTriggerEnter2D(Collider2D collision)
+    void take_weapon()
     {
-        collision.GetComponent<BoxCollider2D>().enabled = false;
-	}
-
-	private void OnTriggerStay2D(Collider2D collision)
-	{
-        //Debug.Log(collision.gameObject.tag);
-        if (Input.GetKeyDown(KeyCode.E) && collision.gameObject.tag == "weapon")
+        if(Input.GetKeyDown(KeyCode.E) && take.gameObject.tag == "weapon")
         {
             Debug.Log("ok");
-            weapon = collision.gameObject;
+            weapon = take.gameObject;
             path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
             //Debug.Log(path);
 
@@ -99,12 +100,40 @@ public class player : MonoBehaviour {
             weapon.GetComponent<CircleCollider2D>().enabled = false;
             weapon.GetComponent<SpriteRenderer>().enabled = false;
         }
+    }
+
+	private void OnTriggerEnter2D(Collider2D collision)
+    {
+        collision.GetComponent<BoxCollider2D>().enabled = false;
+        take = collision;
 	}
+
+
+
+	//private void OnTriggerStay2D(Collider2D collision)
+	//{
+ //       Debug.Log("cocou");
+ //       //Debug.Log(collision.gameObject.tag);
+ //       if (Input.GetKeyDown(KeyCode.E) && collision.gameObject.tag == "weapon")
+ //       {
+ //           Debug.Log("ok");
+ //           weapon = collision.gameObject;
+ //           path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
+ //           //Debug.Log(path);
+
+ //           weapon_sprite.gameObject.SetActive(true);
+ //           weapon_sprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+
+ //           weapon.GetComponent<CircleCollider2D>().enabled = false;
+ //           weapon.GetComponent<SpriteRenderer>().enabled = false;
+ //       }
+	//}
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
         if (!weapon)
             other.GetComponent<BoxCollider2D>().enabled = true;
+        take = null;
 	}
 
 	//public void OnCollisionEnter2D(Collision2D collision)
