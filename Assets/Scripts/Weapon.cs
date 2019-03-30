@@ -8,11 +8,13 @@ public class Weapon : MonoBehaviour {
     public int ammo;
     public int range;
     public GameObject munition;
-    private string weapon_number;
+    public string weapon_number;
+    public string weapon_name;
 	// Use this for initialization
 	void Start () {
         //string numbersOnly = Regex.Replace(weapon_tmp, "[^0-9]", "");
-        weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().name, "[^0-9]", "");
+        weapon_name = GetComponent<SpriteRenderer>().sprite.name;
+        weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
 	}
 	
 	// Update is called once per frame

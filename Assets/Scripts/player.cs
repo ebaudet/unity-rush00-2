@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 public class player : MonoBehaviour {
 
     public GameObject Player;
-    public SpriteRenderer weapon_sprite;
+    public GameObject weapon_sprite;
     private GameObject weapon;
     private string path;
     private string weapon_name;
@@ -19,13 +19,14 @@ public class player : MonoBehaviour {
 	void Start () {
         weapon_tmp = "5-Uzi";
         //weapon_name = int.Parse(weapon_tmp);
-        weapon_sprite = GetComponent<SpriteRenderer>();
-        Debug.Log(weapon_sprite.name);
+        //weapon_sprite = GetComponent<SpriteRenderer>();
+        Debug.Log(weapon_sprite.GetComponent<SpriteRenderer>().sprite.name);
+        //Debug.Log(we)
 
         //path = "Assets/Sprites/weapons/attach-to-body/" + numbersOnly + ".png";
         //Debug.Log(path);
         //weapon_sprite.GetComponent<SpriteRenderer>().sprite = AssetDatabase.LoadAssetAtPath<SpriteRenderer>("Assets/Sprites/weapons/attach-to-body/1.png", typeof(SpriteRenderer));
-        weapon_sprite.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        //weapon_sprite.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
         //AssetDatabase.ImportAsset("Assets/Sprites/weapons/attach-to-body/1.png", ImportAssetOptions.Default);
         //Application.
                    //weapon_sprite = 
@@ -43,18 +44,24 @@ public class player : MonoBehaviour {
             horizontal += -0.2f;
         if (Input.GetKey(KeyCode.D))
             horizontal += 0.2f;
-        //transform.position = new Vector3(transform.localPosition.x + horizontal, transform.localPosition.y + vertical, 0);
         transform.Translate(horizontal, vertical, 0);
+        if (weapon)
+        {
+            weapon.transform.position = new Vector3 (transform.position.x - 0.2f, transform.position.y - 0.3f, 0);
+        }
         
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnCollisionEnter2D(Collision2D collision)
 	{
-        if (collision.gameObject.tag == "weapon")
-        {
-            weapon = collision.gameObject;
-            //weapon.GetComponent<SpriteRenderer>().sprite;
-                  //string numbersOnly = Regex.Replace(weapon_tmp, "[^0-9]", "");
-        }
+        Debug.Log("coucou");
+        Debug.Log(collision.gameObject.name);
+        //if (collision.gameObject.tag == "weapon")
+        //{
+        //    weapon = collision.gameObject;
+        //    path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
+        //    weapon.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        //    //string numbersOnly = Regex.Replace(weapon_tmp, "[^0-9]", "");
+        //}
 	}
 }
