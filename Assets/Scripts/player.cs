@@ -14,6 +14,7 @@ public class player : MonoBehaviour {
     private Vector3     direction;
     private Collider2D  take = null;
     private Quaternion  player_rot;
+    private Quaternion  bullet_rotation;
 
 	// Use this for initialization
 	void Start () {
@@ -38,7 +39,6 @@ public class player : MonoBehaviour {
         if (weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
         else if (weapon && Input.GetMouseButtonDown(0)) {
-            Debug.Log("local rotation :" + transform.localRotation + " rotation : " + transform.rotation + " weapon rotation : "+ weapon.transform.rotation + " weapon local rotation : " + weapon.transform.localRotation);
             weapon.fire(transform.position, transform.localRotation);
         }
 
@@ -70,11 +70,10 @@ public class player : MonoBehaviour {
         //SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction.z = transform.position.z;
-        GameObject currentSprite = gameObject;
-        float angle = Mathf.Atan2(direction.y - currentSprite.transform.position.y, direction.x - currentSprite.transform.position.x) * Mathf.Rad2Deg;
-        //player_rot = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
+        float angle = Mathf.Atan2(direction.y - transform.position.y, direction.x - transform.position.x) * Mathf.Rad2Deg;
+        bullet_rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
         angle += 90;
-        currentSprite.transform.rotation = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
+        transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
         Camera.main.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5F, -10);
 
         // put camera on player position
@@ -113,10 +112,8 @@ public class player : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.name);
-        if (collision.tag != "bullet" && collision.GetComponent<BoxCollider2D>())
+        if (collision.tag == "weapon" && collision.GetComponent<BoxCollider2D>())
         {
-            Debug.Log("collision off pour : " + collision.name);
             collision.GetComponent<BoxCollider2D>().enabled = false;
         }
         take = collision;
