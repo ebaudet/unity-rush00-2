@@ -18,8 +18,11 @@ public class player : MonoBehaviour {
     private Quaternion  player_rot;
     private Quaternion  bullet_rotation;
 
+    public static player instance {get; private set;}
+
 	// Use this for initialization
 	void Start () {
+        instance = this;
 	}
 
     // Key Getters
