@@ -13,10 +13,10 @@ public class player : MonoBehaviour {
 
     private Vector3     direction;
     private Collider2D  take = null;
+    private Quaternion  player_rot;
 
 	// Use this for initialization
 	void Start () {
-
 	}
 
     // Key Getters
@@ -37,8 +37,11 @@ public class player : MonoBehaviour {
     {
         if (weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
-        else if (weapon && Input.GetMouseButtonDown(0))
-            weapon.gameObject.GetComponent<Weapon>().fire(transform.position, transform.rotation);
+        else if (weapon && Input.GetMouseButtonDown(0)) {
+            Debug.Log("local rotation :" + transform.localRotation + " rotation : " + transform.rotation + " weapon rotation : "+ weapon.transform.rotation + " weapon local rotation : " + weapon.transform.localRotation);
+            weapon.fire(transform.position, transform.localRotation);
+        }
+
                 
         float vertical = 0;
         float horizontal = 0;
@@ -55,22 +58,26 @@ public class player : MonoBehaviour {
         {
             weapon.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y - 0.3f, 0);
         }
-        direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        direction.z = transform.position.z;
+
         if (take != null)
             take_weapon();
+        Debug.Log("rotation = " +Vector3.down);
 	}
 
 	private void FixedUpdate()
 	{
         // Change direction of player to the mouse pointer
-        SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        //SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
+        direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        direction.z = transform.position.z;
+        GameObject currentSprite = gameObject;
         float angle = Mathf.Atan2(direction.y - currentSprite.transform.position.y, direction.x - currentSprite.transform.position.x) * Mathf.Rad2Deg;
+        //player_rot = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
         angle += 90;
         currentSprite.transform.rotation = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
+        Camera.main.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5F, -10);
 
         // put camera on player position
-        Camera.main.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5F, -10);
 	}
 
     private void drop_weapon()
@@ -106,14 +113,21 @@ public class player : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D collision)
     {
-        collision.GetComponent<BoxCollider2D>().enabled = false;
+        Debug.Log(collision.name);
+        if (collision.tag != "bullet" && collision.GetComponent<BoxCollider2D>())
+        {
+            Debug.Log("collision off pour : " + collision.name);
+            collision.GetComponent<BoxCollider2D>().enabled = false;
+        }
         take = collision;
 	}
 
     private void OnTriggerExit2D(Collider2D other)
 	{
-        if (!weapon)
+        if (!weapon && other.GetComponent<BoxCollider2D>())
             other.GetComponent<BoxCollider2D>().enabled = true;
+        if (other.tag == "bullet")
+            other.GetComponent<BoxCollider2D>().isTrigger = false;
         take = null;
 	}
 }

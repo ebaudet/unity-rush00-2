@@ -121,6 +121,7 @@ MonoBehaviour:
   fire_rate: 0
   weapon_number: 
   weapon_name: 
+  bullet: {fileID: 1328307777235120, guid: 3b04254ec879343baa9a00ab9710e628, type: 2}
 --- !u!212 &212774527514113496
 SpriteRenderer:
   m_ObjectHideFlags: 1
