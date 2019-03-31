@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - weapon
+  - wall
+  - bullet
+  - enemi
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Wall
   - weapon
   - player
-  - 
+  - door
   - 
   - 
   - 
