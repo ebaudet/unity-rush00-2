@@ -10,6 +10,8 @@ public class player : MonoBehaviour {
     public GameObject   weapon_sprite;
     public Weapon       weapon = null;
     public float        speed;
+    public delegate     void GunShoot(Vector2 pos, float dist);
+    public event GunShoot OnGunShooted;
 
     private Vector3     direction;
     private Collider2D  take = null;
@@ -40,6 +42,8 @@ public class player : MonoBehaviour {
             drop_weapon();
         else if (weapon && Input.GetMouseButtonDown(0)) {
             weapon.fire(transform.position, transform.localRotation);
+            Debug.Log("Raised event: OnGunShooted");
+            OnGunShooted(transform.position, weapon.sound_propagation);
         }
 
                 
