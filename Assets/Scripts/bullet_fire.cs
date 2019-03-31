@@ -27,12 +27,13 @@ public class bullet_fire : MonoBehaviour {
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-        if (collision.gameObject.tag == "wall" || collision.gameObject.tag == "enemi")
+        if (collision.gameObject.tag != "Player")
         {
+            Debug.Log(collision.gameObject.name);
             Debug.Log("Destroy bullet");
             Destroy(gameObject, 0);
             if (collision.gameObject.tag == "enemi")
-                Destroy(collision.gameObject.GetComponentInParent<GameObject>(), 0.5f);
+                Destroy(collision.gameObject, 0.5f);
         }
 	}
 }

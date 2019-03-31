@@ -26,7 +26,7 @@ public class Weapon : MonoBehaviour {
         weapon_name = GetComponent<SpriteRenderer>().sprite.name;
         weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
         path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
-        Debug.Log(weapon_name + " collider = " + bullet.GetComponent<BoxCollider2D>().enabled);
+        //Debug.Log(weapon_name + " collider = " + bullet.GetComponent<BoxCollider2D>().enabled);
 	}
 	
 	// Update is called once per frame
@@ -40,21 +40,14 @@ public class Weapon : MonoBehaviour {
         {
             time = 0;
             bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
-            Debug.Log(player_rot.eulerAngles.z);
+            //Debug.Log(player_rot.eulerAngles.z);
             bulletShooted = Instantiate(bullet, pos, player_rot);
             transform.rotation = player_rot;
-            //tmp.GetComponent<Rigidbody2D>().AddForce(transform.up * 1000.0f);
-            //transform.up = rotation.eulerAngles;
-            //tmp.GetComponent<Rigidbody2D>().MoveRotation(90);
-            //tmp.GetComponent<Rigidbody2D>().AddForce;
-            //tmp.transform.rotation = new Quaternion (player_rot.eulerAngles.x, player_rot.eulerAngles.y, player_rot.eulerAngles.z);
-            //tmp.GetComponent<Rigidbody2D>().rotation = 90;
-            //Debug.Log("rot = " + player_rot.eulerAngles.z);
-            Quaternion bulletRotation = transform.rotation;
-            bulletRotation.z += 90;
-            bulletShooted.transform.rotation = bulletRotation;
 
-          
+            Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            direction.z = transform.position.z;
+            float angle = Mathf.Atan2(direction.y - transform.position.y, direction.x - transform.position.x) * Mathf.Rad2Deg;
+            bulletShooted.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);          
             bulletShooted.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector3.down * 10);
         }
     }
