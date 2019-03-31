@@ -39,8 +39,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: map
+  - name: map-ground
     uniqueID: 2888363835
+    locked: 0
+  - name: map-furniture
+    uniqueID: 1502565479
+    locked: 0
+  - name: map-wall
+    uniqueID: 41147011
     locked: 0
   - name: Default
     uniqueID: 0
