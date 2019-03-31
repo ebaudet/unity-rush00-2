@@ -87,7 +87,9 @@ public class player : MonoBehaviour {
 
     void take_weapon()
     {
-        if(Input.GetKeyDown(KeyCode.E) && take.gameObject.tag == "weapon")
+        if (weapon == null
+            && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
+            && take.gameObject.tag == "weapon")
         {
             Debug.Log("ok");
             weapon = take.GetComponent<Weapon>();
