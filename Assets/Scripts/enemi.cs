@@ -7,6 +7,22 @@ public class enemi : MonoBehaviour {
 
     private GameObject head;
     private GameObject weapon;
+
+    void OnEnable()
+    {
+        player.instance.OnGunShooted += ListenBullet;
+    }
+
+    void OnDisable()
+    {
+        player.instance.OnGunShooted -= ListenBullet;
+    }
+
+    void ListenBullet(Vector2 pos, float dist)
+    {
+        
+    }
+
 	// Use this for initialization
     void Start ()
     {
