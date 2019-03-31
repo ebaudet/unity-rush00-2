@@ -10,6 +10,7 @@ public class player : MonoBehaviour {
     public GameObject Player;
     public GameObject weapon_sprite;
     private GameObject weapon;
+    public float speed;
     private string path;
     private string weapon_name;
     private string weapon_tmp;
@@ -35,6 +36,26 @@ public class player : MonoBehaviour {
         //Application.
                    //weapon_sprite = 
 	}
+
+    private bool getKeyUp()
+    {
+        return (Input.GetKey(KeyCode.W) || Input.GetKey("up"));
+    }
+
+    private bool getKeyDown()
+    {
+        return (Input.GetKey(KeyCode.S) || Input.GetKey("down"));
+    }
+
+    private bool getKeyRight()
+    {
+        return (Input.GetKey(KeyCode.D) || Input.GetKey("right"));
+    }
+
+    private bool getKeyLeft()
+    {
+        return (Input.GetKey(KeyCode.A) || Input.GetKey("left"));
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -46,15 +67,17 @@ public class player : MonoBehaviour {
                 
         vertical = 0;
         horizontal = 0;
-        if (Input.GetKey(KeyCode.S))
+        if (getKeyDown())
             vertical += -0.2f;
-        if (Input.GetKey(KeyCode.W))
+        if (getKeyUp())
             vertical += 0.2f;
-        if (Input.GetKey(KeyCode.A))
+        if (getKeyLeft())
             horizontal += -0.2f;
-        if (Input.GetKey(KeyCode.D))
+        if (getKeyRight())
             horizontal += 0.2f;
-        transform.Translate(horizontal, vertical, 0);
+        // GetComponent<Rigidbody2D>().AddForce(Vector2.left * speed * Time.deltaTime);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(speed * horizontal, speed * vertical);
+        // transform.Translate(horizontal, vertical, 0);
         if (weapon)
         {
             weapon.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y - 0.3f, 0);
@@ -67,10 +90,14 @@ public class player : MonoBehaviour {
 
 	private void FixedUpdate()
 	{
+        // Change direction of player to the mouse pointer
         SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         float angle = Mathf.Atan2(direction.y - currentSprite.transform.position.y, direction.x - currentSprite.transform.position.x) * Mathf.Rad2Deg;
         angle += 90;
         currentSprite.transform.rotation = Quaternion.Euler(0, 0, currentSprite.transform.rotation.z + angle);
+
+        // put camera on player position
+        Camera.main.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5F, -10);
 	}
 
     private void drop_weapon()
