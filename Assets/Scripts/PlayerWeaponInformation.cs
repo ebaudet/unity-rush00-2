@@ -25,7 +25,7 @@ public class PlayerWeaponInformation : MonoBehaviour {
 			if (null == player.weapon)
 				text.text = "No Weapon";
 			else
-				text.text = player.weapon.name;
+				text.text = player.weapon.weapon_name;
 		}
 		else if (info == typeInfo.weapon_single)
 		{
