@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 public class Weapon : MonoBehaviour {
 
     public int ammo;
+    public bool inf_ammo;
     public int range;
     public float fire_rate;
     //public GameObject munition;
