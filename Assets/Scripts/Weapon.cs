@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour {
     public bool inf_ammo;
     public int range;
     public float fire_rate;
+    public float sound_propagation;
     public string weapon_number;
     public string weapon_name;
     private bool player;
