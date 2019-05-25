@@ -5,24 +5,37 @@ using UnityEditor;
 using System.Text.RegularExpressions;
 
 public class player : MonoBehaviour {
-    public Camera       cam;
-    public GameObject   Player;
+
+    public static player instance {get; private set;}
+   
+    public delegate void GunShoot(Vector3 pos, float dist);
+    public event GunShoot OnGunShooted;
+
     public GameObject   weapon_sprite;
     public Weapon       weapon = null;
     public float        speed;
-    public delegate     void GunShoot(Vector2 pos, float dist);
-    public event GunShoot OnGunShooted;
+    
+    private Camera      _cam;
+    private Vector3     _direction;
+    private Collider2D  _take = null;
+    private Quaternion  _playeRrot;
+    private Quaternion  _bulletRotation;
+    private Rigidbody2D _rigidBody;
+    private Animator _legsAnim;
+    private bool _isWalking;
 
-    private Vector3     direction;
-    private Collider2D  take = null;
-    private Quaternion  player_rot;
-    private Quaternion  bullet_rotation;
 
-    public static player instance {get; private set;}
-
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
         instance = this;
+    }
+	
+	private void Start ()
+    {
+        _cam = Camera.main;
+        _rigidBody = GetComponent<Rigidbody2D>();
+        _legsAnim = GetComponentInChildren<Animator>();
+
 	}
 
     // Key Getters
@@ -39,17 +52,17 @@ public class player : MonoBehaviour {
     { return (Input.GetKey(KeyCode.A) || Input.GetKey("left")); }
 	
 	// Update is called once per frame
-	void Update ()
+	private void Update ()
     {
         if (weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
-        else if (weapon && Input.GetMouseButtonDown(0)) {
+        else if (weapon && Input.GetMouseButtonDown(0))
+        {
             weapon.fire(transform.position, transform.localRotation);
             Debug.Log("Raised event: OnGunShooted");
             OnGunShooted(transform.position, weapon.sound_propagation);
         }
-
-                
+        
         float vertical = 0;
         float horizontal = 0;
         if (getKeyDown())
@@ -60,37 +73,46 @@ public class player : MonoBehaviour {
             horizontal += -0.2f;
         if (getKeyRight())
             horizontal += 0.2f;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(speed * horizontal, speed * vertical);
+        _rigidBody.velocity = new Vector2(speed * horizontal, speed * vertical);
         if (weapon)
-        {
             weapon.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y - 0.3f, 0);
-        }
 
-        if (take != null)
+        if (_take != null)
             take_weapon();
-        Debug.Log("rotation = " +Vector3.down);
+                
+        if (_rigidBody.velocity != Vector2.zero)
+        { 
+            if (_isWalking != true)
+                _legsAnim.SetTrigger("isWalking");
+            _isWalking = true;
+        }
+        else
+            _isWalking = false;
+        _legsAnim.SetBool("walk", _isWalking);
+
 	}
 
 	private void FixedUpdate()
 	{
         // Change direction of player to the mouse pointer
         //SpriteRenderer currentSprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        direction.z = transform.position.z;
-        float angle = Mathf.Atan2(direction.y - transform.position.y, direction.x - transform.position.x) * Mathf.Rad2Deg;
-        bullet_rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
+        _direction = _cam.ScreenToWorldPoint(Input.mousePosition);
+        _direction.z = transform.position.z;
+        float angle = Mathf.Atan2(_direction.y - transform.position.y, _direction.x - transform.position.x) * Mathf.Rad2Deg;
+        _bulletRotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
         angle += 90;
         transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
-        Camera.main.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5F, -10);
-
         // put camera on player position
+        _cam.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5f, -10);
+
 	}
 
     private void drop_weapon()
     {
+        // weapon.transform.SetParent(null);
         weapon.GetComponent<CircleCollider2D>().enabled = true;
         weapon.GetComponent<SpriteRenderer>().enabled = true;
-        //weapon.GetComponent<Rigidbody2D>().AddForce(transform.up * 10f);
+        // weapon.GetComponent<Rigidbody2D>().AddForce(transform.up * 10);
         weapon = null;
 
         weapon_sprite.gameObject.SetActive(false);
@@ -102,16 +124,17 @@ public class player : MonoBehaviour {
     {
         if (weapon == null
             && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
-            && take.gameObject.tag == "weapon")
+            && _take.gameObject.tag == "weapon")
         {
             Debug.Log("ok");
-            weapon = take.GetComponent<Weapon>();
+            weapon = _take.GetComponent<Weapon>();
             string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
             //Debug.Log(path);
 
             weapon_sprite.gameObject.SetActive(true);
             weapon_sprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
 
+            // weapon.transform.SetParent(transform, false);
             weapon.GetComponent<CircleCollider2D>().enabled = false;
             weapon.GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -123,7 +146,7 @@ public class player : MonoBehaviour {
         {
             collision.GetComponent<BoxCollider2D>().enabled = false;
         }
-        take = collision;
+        _take = collision;
 	}
 
     private void OnTriggerExit2D(Collider2D other)
@@ -132,6 +155,6 @@ public class player : MonoBehaviour {
             other.GetComponent<BoxCollider2D>().enabled = true;
         if (other.tag == "bullet")
             other.GetComponent<BoxCollider2D>().isTrigger = false;
-        take = null;
+        _take = null;
 	}
 }

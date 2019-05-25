@@ -5,20 +5,21 @@ using UnityEditor;
 
 public class enemi : MonoBehaviour {
 
-    private GameObject head;
-    private GameObject weapon;
+    public SpriteRenderer head;
+    public SpriteRenderer body;
+    public GameObject weapon;
 
     void OnEnable()
     {
-        player.instance.OnGunShooted += ListenBullet;
+        // player.instance.OnGunShooted += ListenBullet;
     }
 
     void OnDisable()
     {
-        player.instance.OnGunShooted -= ListenBullet;
+        // player.instance.OnGunShooted -= ListenBullet;
     }
 
-    void ListenBullet(Vector2 pos, float dist)
+    void ListenBullet(Vector3 pos, float dist)
     {
         
     }
@@ -26,14 +27,12 @@ public class enemi : MonoBehaviour {
 	// Use this for initialization
     void Start ()
     {
-        weapon = transform.Find("weapon").gameObject;
-        head = transform.Find("head").gameObject;
         string path = "Assets/Sprites/characters/body/" + Random.Range(1, 4).ToString() + ".png";
         Debug.Log("body = " + path);
-        gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        body.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
         path = "Assets/Sprites/characters/head/" + Random.Range(1, 13).ToString() + ".png";
         Debug.Log("head = " + path);
-        head.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        head.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
         //string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
         ////Debug.Log(path);
 
