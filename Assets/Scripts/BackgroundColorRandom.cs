@@ -41,7 +41,7 @@ public class BackgroundColorRandom : MonoBehaviour
         while (counter < duration)
         {
             counter += Time.deltaTime;
-            float colorTime = counter / duration;
+            // float colorTime = counter / duration;
             targetCamera.backgroundColor = Color.Lerp(fromColor, toColor, counter / duration);
             yield return null;
         }
