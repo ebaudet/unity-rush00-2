@@ -9,6 +9,6 @@ public class mouse : MonoBehaviour {
 
     void Start ()
     {
-        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
+        // Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
 	}
 }
