@@ -13,50 +13,69 @@ public class Weapon : MonoBehaviour {
     public string weapon_number;
     public string weapon_name;
     public GameObject bullet;
-    private string path;
-    private float time;
-    private GameObject bulletShooted;
-    private AudioClip no_ammo;
 
-	// Use this for initialization
-	void Start ()
+    private string _path;
+    private float _time;
+    private GameObject _bulletShooted;
+    private AudioClip _no_ammo;
+    private bool    _canRotate = false;
+
+
+	private void Start ()
     {
-        time = 0;
-        no_ammo = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/Audio/Sounds/dry_fire.wav", typeof(AudioClip));
+        _time = 0;
+        _no_ammo = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/Audio/Sounds/dry_fire.wav", typeof(AudioClip));
         weapon_name = GetComponent<SpriteRenderer>().sprite.name;
         weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
-        path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
+        _path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
 	}
 	
-	void Update () {
-        time += Time.deltaTime;
+	private void Update ()
+    {
+        _time += Time.deltaTime;
+        if (_canRotate)
+        {
+            transform.Rotate(Vector3.forward * Time.deltaTime * 50 * GetComponent<Rigidbody2D>().velocity.sqrMagnitude);
+            if (GetComponent<Rigidbody2D>().velocity.sqrMagnitude < 0.1)
+                _canRotate = false;
+        }
+        
 	}
 
     public void fire(Vector3 pos, Quaternion player_rot)
     {
-        Debug.Log("time = " + time);
+        // Debug.Log("time = " + time);
         if (ammo == 0 && !inf_ammo)
-            gameObject.GetComponent<AudioSource>().clip = no_ammo;
-        if (time >= fire_rate)
+            gameObject.GetComponent<AudioSource>().clip = _no_ammo;
+        if (_time >= fire_rate)
             gameObject.GetComponent<AudioSource>().Play();
-        if ((ammo > 0 || inf_ammo) && time >= fire_rate)
+        if ((ammo > 0 || inf_ammo) && _time >= fire_rate)
         {
-            time = 0;
+            _time = 0;
             if (!inf_ammo)
                 ammo--;
-            bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+            bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(_path, typeof(Sprite));
             //Debug.Log(player_rot.eulerAngles.z);
-            bulletShooted = Instantiate(bullet, pos, player_rot);
+            _bulletShooted = Instantiate(bullet, pos, player_rot);
             transform.rotation = player_rot;
             Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             direction.z = transform.position.z;
             float angle = Mathf.Atan2(direction.y - transform.position.y, direction.x - transform.position.x) * Mathf.Rad2Deg;
-            bulletShooted.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);          
-            bulletShooted.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector3.down * 10);
+            _bulletShooted.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);          
+            _bulletShooted.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector3.down * 10);
             if (inf_ammo)
-                Destroy(bulletShooted, 0.1f);
-            
+                Destroy(_bulletShooted, 0.1f);
         }
+    }
+
+    public void ThrowWeapon(int throwingDir)
+    {
+        Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dir.z = transform.position.z;
+        float angle = Mathf.Atan2(dir.y - transform.position.y, dir.x - transform.position.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle + 90);          
+        GetComponent<Rigidbody2D>().AddForce(transform.TransformDirection(Vector3.down * 5 * throwingDir), ForceMode2D.Impulse);
+        _canRotate = true;
     }
 
 }

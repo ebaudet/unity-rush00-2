@@ -23,6 +23,7 @@ public class player : MonoBehaviour {
     private Rigidbody2D _rigidBody;
     private Animator _legsAnim;
     private bool _isWalking;
+    private int _throwingDir;
 
 
     private void Awake()
@@ -35,21 +36,29 @@ public class player : MonoBehaviour {
         _cam = Camera.main;
         _rigidBody = GetComponent<Rigidbody2D>();
         _legsAnim = GetComponentInChildren<Animator>();
-
+        _throwingDir = 1;
 	}
 
     // Key Getters
     private bool getKeyUp()
-    { return (Input.GetKey(KeyCode.W) || Input.GetKey("up")); }
+    {
+        return (Input.GetKey(KeyCode.W) || Input.GetKey("up"));
+    }
 
     private bool getKeyDown()
-    { return (Input.GetKey(KeyCode.S) || Input.GetKey("down")); }
+    {
+        return (Input.GetKey(KeyCode.S) || Input.GetKey("down"));
+    }
 
     private bool getKeyRight()
-    { return (Input.GetKey(KeyCode.D) || Input.GetKey("right")); }
+    {
+        return (Input.GetKey(KeyCode.D) || Input.GetKey("right"));
+    }
     
     private bool getKeyLeft()
-    { return (Input.GetKey(KeyCode.A) || Input.GetKey("left")); }
+    {
+        return (Input.GetKey(KeyCode.A) || Input.GetKey("left"));
+    }
 	
 	// Update is called once per frame
 	private void Update ()
@@ -113,7 +122,7 @@ public class player : MonoBehaviour {
         // weapon.transform.SetParent(null);
         weapon.GetComponent<CircleCollider2D>().enabled = true;
         weapon.GetComponent<SpriteRenderer>().enabled = true;
-        // weapon.GetComponent<Rigidbody2D>().AddForce(transform.up * 10);
+        weapon.GetComponent<Weapon>().ThrowWeapon(_throwingDir);
         weapon = null;
 
         weapon_sprite.gameObject.SetActive(false);
@@ -127,7 +136,7 @@ public class player : MonoBehaviour {
             && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
             && _take.gameObject.tag == "weapon")
         {
-            Debug.Log("ok");
+            // Debug.Log("weapon picked up");
             weapon = _take.GetComponent<Weapon>();
             string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
             //Debug.Log(path);
@@ -148,6 +157,8 @@ public class player : MonoBehaviour {
             collision.GetComponent<BoxCollider2D>().enabled = false;
         }
         _take = collision;
+        if (collision.tag == "wall")
+            _throwingDir = -1;
 	}
 
     private void OnTriggerExit2D(Collider2D other)
@@ -157,5 +168,7 @@ public class player : MonoBehaviour {
         if (other.tag == "bullet")
             other.GetComponent<BoxCollider2D>().isTrigger = false;
         _take = null;
+        if (other.tag == "wall")
+            _throwingDir = 1;
 	}
 }
