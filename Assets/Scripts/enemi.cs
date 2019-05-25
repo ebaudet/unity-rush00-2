@@ -9,24 +9,33 @@ public class enemi : MonoBehaviour {
     public SpriteRenderer body;
     public GameObject weapon;
 
-    void OnEnable()
-    {
-        // player.instance.OnGunShooted += ListenBullet;
-    }
+    // void OnEnable()
+    // {
+    //     if (player.instance != null)
+    //     {
+    //         player.instance.OnGunShooted += ListenBullet;
+    //         Debug.Log("listen to bullet");
+    //     }
+    // }
 
     void OnDisable()
     {
-        // player.instance.OnGunShooted -= ListenBullet;
+        player.instance.OnGunShooted -= ListenBullet;
     }
 
     void ListenBullet(Vector3 pos, float dist)
     {
-        
+        Debug.Log("enter ListenBullet()");
     }
 
 	// Use this for initialization
     void Start ()
     {
+        if (player.instance != null)
+        {
+            player.instance.OnGunShooted += ListenBullet;
+            Debug.Log("listen to bullet in start");
+        }
         string path = "Assets/Sprites/characters/body/" + Random.Range(1, 4).ToString() + ".png";
         Debug.Log("body = " + path);
         body.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
