@@ -21,9 +21,9 @@ public class player : MonoBehaviour {
     private Quaternion  _playeRrot;
     private Quaternion  _bulletRotation;
     private Rigidbody2D _rigidBody;
-    private Animator _legsAnim;
-    private bool _isWalking;
-    private int _throwingDir;
+    private Animator    _legsAnim;
+    private bool        _isWalking;
+    private int         _throwingDir;
 
 
     private void Awake()

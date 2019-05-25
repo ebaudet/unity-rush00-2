@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4465732502255442}
   - component: {fileID: 61765197168109362}
   - component: {fileID: 114169210037065784}
+  - component: {fileID: 50457530116970890}
   m_Layer: 0
   m_Name: enemi
   m_TagString: enemi
@@ -162,6 +163,26 @@ Transform:
   m_Father: {fileID: 4465732502255442}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50457530116970890
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026549536479344}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 16a5d1bfd49004e898efb69ae7f0638b, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!61 &61765197168109362
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -218,6 +239,9 @@ MonoBehaviour:
   head: {fileID: 212178584163217786}
   body: {fileID: 212697829972671466}
   weapon: {fileID: 1829819159880402}
+  player: {fileID: 0}
+  state: 0
+  soundPosition: {x: 0, y: 0, z: 0}
 --- !u!212 &212142785640935474
 SpriteRenderer:
   m_ObjectHideFlags: 1
