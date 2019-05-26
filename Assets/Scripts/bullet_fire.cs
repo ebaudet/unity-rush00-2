@@ -20,9 +20,8 @@ public class bullet_fire : MonoBehaviour
 			attack(collision.gameObject, "enemi", "Player");
 		}
 		
-		if (colTag == "wall") {
+		if (colTag == "wall")
 			Destroy(gameObject);
-		}
 	}
 
 	private void attack(GameObject g, string ownTag, string otherTag)
@@ -32,7 +31,7 @@ public class bullet_fire : MonoBehaviour
 			Debug.Log(g.name);
 			if (g.tag == otherTag) {
 				if (otherTag == "Player")
-					player.instance.isAlive = false;
+					player.instance.Die();
 				else
 					g.GetComponent<enemi>().Die();
 			}
