@@ -60,13 +60,14 @@ public class Weapon : MonoBehaviour {
                 ammo--;
             bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(_path, typeof(Sprite));
             //Debug.Log(player_rot.eulerAngles.z);
+            // player_rot = Quaternion.Euler(0, 0, transform.rotation.z + 180);
             _bulletShooted = Instantiate(bullet, pos, player_rot);
             transform.rotation = player_rot;
             Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             direction.z = transform.position.z;
             float angle = Mathf.Atan2(direction.y - transform.position.y, direction.x - transform.position.x) * Mathf.Rad2Deg;
             _bulletShooted.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);          
-            _bulletShooted.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector3.down * 10);
+            _bulletShooted.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector3.down * 20);
             if (inf_ammo)
                 Destroy(_bulletShooted, 0.1f);
         }

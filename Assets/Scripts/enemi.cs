@@ -8,6 +8,8 @@ public class enemi : MonoBehaviour
 	public SpriteRenderer head;
 	public SpriteRenderer body;
 	public Weapon weapon;
+    public AudioClip    deathClip;
+
 
 	public int blockingLayer;
 
@@ -17,6 +19,7 @@ public class enemi : MonoBehaviour
 	private Rigidbody2D _rb;
 	private float _timerRun;
 	private IEnumerator _routine = null;
+    private AudioSource _audioSrc;
 
 	public enum stateEnemy
 	{
@@ -46,6 +49,8 @@ public class enemi : MonoBehaviour
 		path = "Assets/Sprites/characters/head/" + Random.Range(1, 13).ToString() + ".png";
 		Debug.Log("head = " + path);
 		head.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        _audioSrc = GetComponent<AudioSource>();
+
 	}
 
 	void OnDisable()
@@ -55,11 +60,13 @@ public class enemi : MonoBehaviour
 
 	void ListenBullet(Vector3 pos, float dist)
 	{
+		Debug.Log("ListenBullet : " + pos + dist);
 		if (Vector3.Distance(pos, transform.position) <= dist)
 		{
 			Debug.Log("Enemi " + name + " heard the bullet shot.");
 			state = stateEnemy.sound_alert;
 			soundPosition = pos;
+			_timerRun = 2f;
 		}
 	}
 
@@ -94,7 +101,8 @@ public class enemi : MonoBehaviour
 				break;
 			case stateEnemy.sound_alert:
 				_timerRun -= Time.deltaTime;
-				if (changeState(_timerRun < 0, stateEnemy.stay)) break;
+				if (changeState(_timerRun < 0, stateEnemy.stay))
+					break;
 				runToPos(soundPosition);
 				changeState(soundPosition == transform.position, stateEnemy.stay);
 				break;
@@ -104,11 +112,17 @@ public class enemi : MonoBehaviour
 				runToPos(_player.transform.position);
 				break;
 			case stateEnemy.routine:
-				Debug.Log("routine");
 				patrolling();
 				break;
 		};
 	}
+
+	public void Die()
+    {
+        _audioSrc.clip = deathClip;
+        _audioSrc.Play();
+		Destroy(gameObject, deathClip.length);
+    }
 
 	/**************************/
 	/*      Patrole stuff     */
