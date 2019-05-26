@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+// using UnityEditor;
 
 public class enemi : MonoBehaviour
 {
 	public SpriteRenderer head;
+	public Sprite[]	headSprites;
 	public SpriteRenderer body;
+	public Sprite[]	bodySprites;
 	public Weapon weapon;
     public AudioClip    deathClip;
 
@@ -42,14 +44,18 @@ public class enemi : MonoBehaviour
 		if (player.instance != null)
 		{
 			player.instance.OnGunShooted += ListenBullet;
-			Debug.Log("listen to bullet in start");
+			// Debug.Log("listen to bullet in start");
 		}
-		string path = "Assets/Sprites/characters/body/" + Random.Range(1, 4).ToString() + ".png";
-		Debug.Log("body = " + path);
-		body.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
-		path = "Assets/Sprites/characters/head/" + Random.Range(1, 13).ToString() + ".png";
-		Debug.Log("head = " + path);
-		head.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+		// string path = "Assets/Sprites/characters/body/" + Random.Range(1, 4).ToString() + ".png";
+		// Debug.Log("body = " + path);
+		// body.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+		body.sprite = bodySprites[Random.Range(0, bodySprites.Length)];
+
+		// path = "Assets/Sprites/characters/head/" + Random.Range(1, 13).ToString() + ".png";
+		// Debug.Log("head = " + path);
+		// head.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+		head.sprite = headSprites[Random.Range(0, headSprites.Length)];
+
         _audioSrc = GetComponent<AudioSource>();
 
 	}
@@ -61,10 +67,10 @@ public class enemi : MonoBehaviour
 
 	void ListenBullet(Vector3 pos, float dist)
 	{
-		Debug.Log("ListenBullet : " + pos + dist);
+		// Debug.Log("ListenBullet : " + pos + dist);
 		if (Vector3.Distance(pos, transform.position) <= dist)
 		{
-			Debug.Log("Enemi " + name + " heard the bullet shot.");
+			// Debug.Log("Enemi " + name + " heard the bullet shot.");
 			state = stateEnemy.sound_alert;
 			soundPosition = pos;
 			_timerRun = 2f;
@@ -77,12 +83,12 @@ public class enemi : MonoBehaviour
 			return;
 		
 		Vector3 heading = _player.transform.position - transform.position;
-		Debug.DrawRay(transform.position, heading, Color.red, 3f, true);
+		// Debug.DrawRay(transform.position, heading, Color.red, 3f, true);
 		LayerMask mask = LayerMask.GetMask("door", "Wall", "player");
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, heading, 10, mask);
 		if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("player"))
 		{
-			Debug.Log("hit:  we hit that fucking player. Kill him !");
+			// Debug.Log("hit:  we hit that fucking player. Kill him !");
 			state = stateEnemy.view_player;
 			if (_routine == null)
 			{
@@ -155,7 +161,7 @@ public class enemi : MonoBehaviour
 		runToPos(_checkPoints[_index].position);
 		if (onPosition(transform.position, _checkPoints[_index].position))
 		{
-			Debug.Log("Goto next check point");
+			// Debug.Log("Goto next check point");
 			_index++;
 			if (_index == _checkPoints.Count)
 				_index = 0;

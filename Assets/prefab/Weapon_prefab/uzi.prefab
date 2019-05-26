@@ -199,10 +199,11 @@ MonoBehaviour:
   ammo: 50
   inf_ammo: 0
   fire_rate: 0.3
-  sound_propagation: 0
   weapon_number: 
   weapon_name: 
   bullet: {fileID: 1328307777235120, guid: 3b04254ec879343baa9a00ab9710e628, type: 2}
+  noAmmo: {fileID: 8300000, guid: d63d69bae90b8425b9448e75e1f0cd64, type: 3}
+  ammoSprite: {fileID: 21300000, guid: 4b5fba961acb6452aaabf2a6f96856a1, type: 3}
 --- !u!212 &212367635659362832
 SpriteRenderer:
   m_ObjectHideFlags: 1

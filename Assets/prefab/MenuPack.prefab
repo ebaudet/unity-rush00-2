@@ -255,7 +255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1760651861878824
 GameObject:
   m_ObjectHideFlags: 1
@@ -471,7 +471,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: 0
-  player: {fileID: 0}
 --- !u!114 &114114016384026170
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -717,6 +716,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTags: []
   winScreen: {fileID: 1727308447305306}
+  lastText: {fileID: 114549339349474640}
+  nextLevelText: {fileID: 1212096302324898}
+  retryText: {fileID: 1270050854080942}
   loseScreen: {fileID: 1987488450621556}
   pauseScreen: {fileID: 1339859248092230}
   winClip: {fileID: 8300000, guid: 3f823d776f2224f7eaa3e3ad6976db1b, type: 3}
@@ -734,7 +736,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: 1
-  player: {fileID: 0}
 --- !u!114 &114345623060110076
 MonoBehaviour:
   m_ObjectHideFlags: 1

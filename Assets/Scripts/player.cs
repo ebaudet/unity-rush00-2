@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+// using UnityEditor;
 using System.Text.RegularExpressions;
 
 public class player : MonoBehaviour {
@@ -12,6 +12,7 @@ public class player : MonoBehaviour {
     public event GunShoot OnGunShooted;
 
     public GameObject   weaponSprite;
+    public Sprite[]     weaponSprites;
     public Weapon       weapon = null;
     public AudioClip   pickWeaponClip;
     public AudioClip   throwWeaponClip;
@@ -160,11 +161,52 @@ public class player : MonoBehaviour {
             _audioSrc.Play();
             // Debug.Log("weapon picked up");
             weapon = _take.GetComponent<Weapon>();
-            string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
-            //Debug.Log(path);
+            // string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
 
             weaponSprite.gameObject.SetActive(true);
-            weaponSprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+            // weaponSprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+
+            switch (weapon.name)
+            {
+                case "uzi":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[0];
+                    break;
+                case "shotgun":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[1];
+                    break;
+                case "magnum":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[2];
+                    break;
+                case "rockot_launcher":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[3];
+                    break;
+                case "sabre":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[4];
+                    break;
+                case "cricket":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[5];
+                    break;
+                case "nes_pistol":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[6];
+                    break;
+                case "sub_machine_gun":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[7];
+                    break;
+                case "machine_gun":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[8];
+                    break;
+                case "energy_pistol":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[9];
+                    break;
+                case "sniper":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[10];
+                    break;
+                case "punch":
+                    weaponSprite.GetComponent<SpriteRenderer>().sprite = weaponSprites[11];
+                    break;
+                
+            }
+
 
             // weapon.transform.SetParent(transform, false);
             weapon.GetComponent<CircleCollider2D>().enabled = false;
