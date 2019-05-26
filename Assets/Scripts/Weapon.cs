@@ -82,4 +82,12 @@ public class Weapon : MonoBehaviour {
         _canRotate = true;
     }
 
+    // private void OnCollisionEnter2D(Collision2D other) {
+    //     if (other.transform.tag == "wall")
+    //     {
+    //         Debug.Log("Inverse weapon's velocity");
+    //         GetComponent<Rigidbody2D>().velocity *= -1;
+    //     }
+    // }
+
 }
