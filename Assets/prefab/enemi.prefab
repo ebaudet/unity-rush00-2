@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 61765197168109362}
   - component: {fileID: 114169210037065784}
   - component: {fileID: 114017142464895036}
+  - component: {fileID: 50898865557194318}
   m_Layer: 0
   m_Name: enemi
   m_TagString: enemi
@@ -163,7 +164,7 @@ Transform:
   m_Father: {fileID: 4465732502255442}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50457530116970890
+--- !u!50 &50898865557194318
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
@@ -181,7 +182,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 16a5d1bfd49004e898efb69ae7f0638b, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!61 &61765197168109362
 BoxCollider2D:
@@ -239,6 +240,8 @@ MonoBehaviour:
   head: {fileID: 212178584163217786}
   body: {fileID: 212697829972671466}
   weapon: {fileID: 1829819159880402}
+  state: 0
+  soundPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114169210037065784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -253,7 +256,6 @@ MonoBehaviour:
   head: {fileID: 212178584163217786}
   body: {fileID: 212697829972671466}
   weapon: {fileID: 1829819159880402}
-  player: {fileID: 0}
   state: 0
   soundPosition: {x: 0, y: 0, z: 0}
 --- !u!212 &212142785640935474
