@@ -11,7 +11,7 @@ public class enemi : MonoBehaviour
 
 	public int blockingLayer;
 
-	[SerializeField] private List<Transform> _checkPoints;
+	[SerializeField] private List<Transform> _checkPoints = null;
 	private int _index = 0;
 	private player _player;
 	private Rigidbody2D _rb;
@@ -127,7 +127,7 @@ public class enemi : MonoBehaviour
 
 	public void patrolling()
 	{
-		if (_checkPoints == null)
+		if (_checkPoints == null || _checkPoints.Count == 0)
 		{
 			state = stateEnemy.routine;
 			return;
