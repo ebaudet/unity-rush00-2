@@ -6,8 +6,9 @@ TagManager:
   tags:
   - weapon
   - wall
-  - bullet
   - enemi
+  - bullet-player
+  - bullet-enemy
   layers:
   - Default
   - TransparentFX

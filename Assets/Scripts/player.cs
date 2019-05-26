@@ -30,6 +30,7 @@ public class player : MonoBehaviour {
     private int         _throwingDir;
     private AudioSource _audioSrc;
 
+    [SerializeField]private bool  _godMode = false;
 
     private void Awake()
     {
@@ -71,8 +72,10 @@ public class player : MonoBehaviour {
     {
         if (isAlive == false)
             return;
-
         
+        if (Input.GetKeyDown(KeyCode.G))
+            _godMode = !_godMode;
+
         if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
         else if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(0))
@@ -109,9 +112,6 @@ public class player : MonoBehaviour {
         else
             _isWalking = false;
         _legsAnim.SetBool("walk", _isWalking);
-
-        
-
 	}
 
 	private void FixedUpdate()
@@ -126,8 +126,6 @@ public class player : MonoBehaviour {
         transform.rotation = Quaternion.Euler(0, 0, transform.rotation.z + angle);
         // put camera on player position
         _cam.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5f, -10);
-
-
 	}
 
     private void drop_weapon()
@@ -176,6 +174,8 @@ public class player : MonoBehaviour {
 
     public void Die()
     {
+        if (_godMode == true)
+            return;
         _audioSrc.clip = deathClip;
         _audioSrc.Play();
         isAlive = false;

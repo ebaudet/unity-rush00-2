@@ -11,23 +11,31 @@ public class bullet_fire : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "wall" || collision.gameObject.tag == "enemi")
-		{
-			Debug.Log("Destroy bullet");
-			if (collision.gameObject.tag == "enemi")
-				Destroy(collision.gameObject, 0.5f);
+		// Debug.Log("OnCollisionEnter2D");
+		string colTag = collision.gameObject.tag;
+
+		if (transform.tag == "bullet-player")
+			attack(collision.gameObject, "Player", "enemi");
+		else if (transform.tag == "bullet-enemy") {
+			attack(collision.gameObject, "enemi", "Player");
+		}
+		
+		if (colTag == "wall") {
 			Destroy(gameObject);
 		}
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	private void attack(GameObject g, string ownTag, string otherTag)
 	{
-		if (collision.gameObject.tag != "Player")
+		if (g.tag != ownTag)
 		{
-			Debug.Log(collision.gameObject.name);
-			Debug.Log("Destroy bullet");
-			if (collision.gameObject.tag == "enemi")
-				Destroy(collision.gameObject, 0.5f);
+			Debug.Log(g.name);
+			if (g.tag == otherTag) {
+				if (otherTag == "Player")
+					player.instance.isAlive = false;
+				else
+					g.GetComponent<enemi>().Die();
+			}
 			Destroy(gameObject);
 		}
 	}
