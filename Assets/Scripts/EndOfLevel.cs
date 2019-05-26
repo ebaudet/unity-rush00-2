@@ -39,6 +39,9 @@ public class EndOfLevel : MonoBehaviour
 	{
 		if (Input.GetKeyDown("escape"))
 			TogglePause();
+
+		if (Input.GetKeyDown("backspace"))
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 				
 		for (int i = 0; i < _enemies.Count; i++)
 		{

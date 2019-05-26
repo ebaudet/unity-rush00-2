@@ -11,10 +11,13 @@ public class player : MonoBehaviour {
     public delegate void GunShoot(Vector3 pos, float dist);
     public event GunShoot OnGunShooted;
 
-    public GameObject   weapon_sprite;
+    public GameObject   weaponSprite;
     public Weapon       weapon = null;
+    public AudioClip   pickWeaponClip;
+    public AudioClip   throwWeaponClip;
     public float        speed;
     public bool         isAlive = true;
+    public AudioClip    deathClip;
     
     private Camera      _cam;
     private Vector3     _direction;
@@ -25,6 +28,7 @@ public class player : MonoBehaviour {
     private Animator    _legsAnim;
     private bool        _isWalking;
     private int         _throwingDir;
+    private AudioSource _audioSrc;
 
 
     private void Awake()
@@ -37,6 +41,7 @@ public class player : MonoBehaviour {
         _cam = Camera.main;
         _rigidBody = GetComponent<Rigidbody2D>();
         _legsAnim = GetComponentInChildren<Animator>();
+        _audioSrc = GetComponent<AudioSource>();
         _throwingDir = 1;
 	}
 
@@ -64,6 +69,10 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	private void Update ()
     {
+        if (isAlive == false)
+            return;
+
+        
         if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
         else if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(0))
@@ -86,7 +95,7 @@ public class player : MonoBehaviour {
             horizontal += 0.2f;
         _rigidBody.velocity = new Vector2(speed * horizontal, speed * vertical);
         if (weapon)
-            weapon.transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y - 0.3f, 0);
+            weapon.transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y - 0.3f, 0);
 
         if (_take != null)
             take_weapon();
@@ -100,6 +109,8 @@ public class player : MonoBehaviour {
         else
             _isWalking = false;
         _legsAnim.SetBool("walk", _isWalking);
+
+        
 
 	}
 
@@ -116,39 +127,58 @@ public class player : MonoBehaviour {
         // put camera on player position
         _cam.transform.position = new Vector3(transform.localPosition.x, transform.localPosition.y + 0.5f, -10);
 
+
 	}
 
     private void drop_weapon()
     {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position - transform.up * 0.7f, -transform.up, 0.3f);
+        // Debug.DrawRay(transform.position - transform.up * 0.7f, -transform.up, Color.green,10);
+        if (hit.collider != null && hit.collider.transform.tag == "wall")
+            _throwingDir = -1;
+        else
+            _throwingDir = 1;
+
         // weapon.transform.SetParent(null);
+        _audioSrc.clip = throwWeaponClip;
+        _audioSrc.Play();
         weapon.GetComponent<CircleCollider2D>().enabled = true;
         weapon.GetComponent<SpriteRenderer>().enabled = true;
         weapon.GetComponent<Weapon>().ThrowWeapon(_throwingDir);
         weapon = null;
 
-        weapon_sprite.gameObject.SetActive(false);
-        weapon_sprite.GetComponent<SpriteRenderer>().sprite = null;//(Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+        weaponSprite.gameObject.SetActive(false);
+        weaponSprite.GetComponent<SpriteRenderer>().sprite = null;
 
     }
 
-    void take_weapon()
+    private void take_weapon()
     {
         if (weapon == null
             && (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
             && _take.gameObject.tag == "weapon")
         {
+            _audioSrc.clip = pickWeaponClip;
+            _audioSrc.Play();
             // Debug.Log("weapon picked up");
             weapon = _take.GetComponent<Weapon>();
             string path = "Assets/Sprites/weapons/attach-to-body/" + weapon.GetComponent<Weapon>().weapon_number + ".png";
             //Debug.Log(path);
 
-            weapon_sprite.gameObject.SetActive(true);
-            weapon_sprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
+            weaponSprite.gameObject.SetActive(true);
+            weaponSprite.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path, typeof(Sprite));
 
             // weapon.transform.SetParent(transform, false);
             weapon.GetComponent<CircleCollider2D>().enabled = false;
             weapon.GetComponent<SpriteRenderer>().enabled = false;
         }
+    }
+
+    public void Die()
+    {
+        _audioSrc.clip = deathClip;
+        _audioSrc.Play();
+        isAlive = false;
     }
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -158,8 +188,7 @@ public class player : MonoBehaviour {
             collision.GetComponent<BoxCollider2D>().enabled = false;
         }
         _take = collision;
-        if (collision.tag == "wall")
-            _throwingDir = -1;
+
 	}
 
     private void OnTriggerExit2D(Collider2D other)
@@ -169,7 +198,6 @@ public class player : MonoBehaviour {
         if (other.tag == "bullet")
             other.GetComponent<BoxCollider2D>().isTrigger = false;
         _take = null;
-        if (other.tag == "wall")
-            _throwingDir = 1;
+
 	}
 }
