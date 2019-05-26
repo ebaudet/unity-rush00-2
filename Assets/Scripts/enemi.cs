@@ -20,6 +20,7 @@ public class enemi : MonoBehaviour
 	private float _timerRun;
 	private IEnumerator _routine = null;
     private AudioSource _audioSrc;
+	private bool		_isAlive = true;
 
 	public enum stateEnemy
 	{
@@ -72,6 +73,9 @@ public class enemi : MonoBehaviour
 
 	void Update()
 	{
+		if (_isAlive == false)
+			return;
+		
 		Vector3 heading = _player.transform.position - transform.position;
 		Debug.DrawRay(transform.position, heading, Color.red, 3f, true);
 		LayerMask mask = LayerMask.GetMask("door", "Wall", "player");
@@ -121,6 +125,8 @@ public class enemi : MonoBehaviour
     {
         _audioSrc.clip = deathClip;
         _audioSrc.Play();
+		StopAllCoroutines();
+		_isAlive = false;
 		Destroy(gameObject, deathClip.length);
     }
 
