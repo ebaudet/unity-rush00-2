@@ -1290,6 +1290,15 @@ Prefab:
       propertyPath: m_Name
       value: enemi (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 82873680291017730, guid: 349bb0fb9ecae41328579c73982bb88c,
+        type: 2}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026549536479344, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}
   m_IsPrefabParent: 0
@@ -1587,6 +1596,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 82873680291017730, guid: 349bb0fb9ecae41328579c73982bb88c,
+        type: 2}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}
   m_IsPrefabParent: 0
@@ -1777,6 +1791,15 @@ Prefab:
     - target: {fileID: 1026549536479344, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}
       propertyPath: m_Name
       value: enemi (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 82873680291017730, guid: 349bb0fb9ecae41328579c73982bb88c,
+        type: 2}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026549536479344, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 349bb0fb9ecae41328579c73982bb88c, type: 2}

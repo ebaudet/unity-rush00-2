@@ -83,12 +83,14 @@ public class enemi : MonoBehaviour
 			return;
 		
 		Vector3 heading = _player.transform.position - transform.position;
-		// Debug.DrawRay(transform.position, heading, Color.red, 3f, true);
 		LayerMask mask = LayerMask.GetMask("door", "Wall", "player");
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, heading, 10, mask);
+		float angle = Vector2.Angle(transform.up, heading);
+		float dist = 1f;
+		if (isWithin(angle, 155f, 205f))
+			dist = 7f;
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, heading, dist, mask);
 		if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("player"))
 		{
-			// Debug.Log("hit:  we hit that fucking player. Kill him !");
 			state = stateEnemy.view_player;
 			if (_routine == null)
 			{
