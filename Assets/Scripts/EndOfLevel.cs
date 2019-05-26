@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class EndOfLevel : MonoBehaviour
 {
 	public GameObject[]	enemyTags;
 	public GameObject	winScreen;
+	public Text			lastText;
+	public GameObject	nextLevelText;
+	public GameObject	retryText;
 	public GameObject	loseScreen;
 	public GameObject	pauseScreen;
 	public AudioClip	winClip;
@@ -62,6 +66,12 @@ public class EndOfLevel : MonoBehaviour
 	{
 		if (other.transform.tag == "Player" && _enemies.Count == 0)
 		{
+			if (Application.CanStreamedLevelBeLoaded(SceneManager.GetActiveScene().buildIndex + 1) == false)
+			{
+				lastText.text = "YOU WIN";
+				nextLevelText.SetActive(false);
+				retryText.SetActive(false);
+			}
 			GetComponent<AudioSource>().clip = winClip;
 			GetComponent<AudioSource>().Play();
 			winScreen.SetActive(true);

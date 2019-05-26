@@ -31,12 +31,12 @@ public class BoutonActionScene : MonoBehaviour {
 		}
 		else if (action == actionButton.goto_scene_name)
 		{
-			Debug.Log("changement scene : " + scene_name);
+			// Debug.Log("changement scene : " + scene_name);
 			SceneManager.LoadScene(scene_name);
 		}
 		else if (action == actionButton.goto_scene_id)
 		{
-			Debug.Log("changement scene : " + scene_id);
+			// Debug.Log("changement scene : " + scene_id);
 			SceneManager.LoadScene(scene_id);
 		}
 	}

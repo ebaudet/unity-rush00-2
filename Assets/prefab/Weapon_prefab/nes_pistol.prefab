@@ -202,6 +202,8 @@ MonoBehaviour:
   weapon_number: 
   weapon_name: 
   bullet: {fileID: 1328307777235120, guid: 3b04254ec879343baa9a00ab9710e628, type: 2}
+  noAmmo: {fileID: 8300000, guid: d63d69bae90b8425b9448e75e1f0cd64, type: 3}
+  ammoSprite: {fileID: 21300000, guid: 4584cc037c60a488da1747a1bdc4eafd, type: 3}
 --- !u!212 &212265723793292128
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+// using UnityEditor;
 using System.Text.RegularExpressions;
 
 public class Weapon : MonoBehaviour {
@@ -12,21 +12,22 @@ public class Weapon : MonoBehaviour {
     public string weapon_number;
     public string weapon_name;
     public GameObject bullet;
+    public AudioClip noAmmo;
+    public Sprite ammoSprite;
 
     private string _path;
     private float _time;
     private GameObject _bulletShooted;
-    private AudioClip _no_ammo;
     private bool    _canRotate = false;
     private float _sound_propagation;
 
 	private void Start ()
     {
         _time = 0;
-        _no_ammo = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/Audio/Sounds/dry_fire.wav", typeof(AudioClip));
+        // _no_ammo = (AudioClip)AssetDatabase.LoadAssetAtPath("Assets/Audio/Sounds/dry_fire.wav", typeof(AudioClip));
         weapon_name = GetComponent<SpriteRenderer>().sprite.name;
-        weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
-        _path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
+        // weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
+        // _path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
         _sound_propagation = gameObject.GetComponent<AudioSource>().maxDistance;
 	}
 	
@@ -50,7 +51,7 @@ public class Weapon : MonoBehaviour {
     {
         // Debug.Log("time = " + time);
         if (ammo == 0 && !inf_ammo)
-            gameObject.GetComponent<AudioSource>().clip = _no_ammo;
+            gameObject.GetComponent<AudioSource>().clip = noAmmo;
         if (_time >= fire_rate)
             gameObject.GetComponent<AudioSource>().Play();
         if ((ammo > 0 || inf_ammo) && _time >= fire_rate)
@@ -58,9 +59,8 @@ public class Weapon : MonoBehaviour {
             _time = 0;
             if (!inf_ammo)
                 ammo--;
-            bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(_path, typeof(Sprite));
-            //Debug.Log(player_rot.eulerAngles.z);
-            // player_rot = Quaternion.Euler(0, 0, transform.rotation.z + 180);
+            // bullet.GetComponent<SpriteRenderer>().sprite = (Sprite)AssetDatabase.LoadAssetAtPath(_path, typeof(Sprite));
+            bullet.GetComponent<SpriteRenderer>().sprite = ammoSprite;
             _bulletShooted = Instantiate(bullet, pos, player_rot);
             transform.rotation = player_rot;
             Vector3 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition);

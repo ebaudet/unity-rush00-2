@@ -340,12 +340,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponSprite: {fileID: 1684313838758746}
+  weaponSprites:
+  - {fileID: 21300000, guid: 43a139c7bee644f6f96d3ce30cc7cc15, type: 3}
+  - {fileID: 21300000, guid: 2775ead70e19f415884382d7d0911c04, type: 3}
+  - {fileID: 21300000, guid: 998863868c48d4acb8825638c9fe303c, type: 3}
+  - {fileID: 21300000, guid: e3140efe7137c48f8801a03d57bcc3d9, type: 3}
+  - {fileID: 21300000, guid: 6a80894c63238427280b822e403bcc63, type: 3}
+  - {fileID: 21300000, guid: 5e114d784ad9241b3b5c1072454ff4ef, type: 3}
+  - {fileID: 21300000, guid: 45311f9076bbc430e97a856761c1dec0, type: 3}
+  - {fileID: 21300000, guid: a315ebc2f13264de1ad811d9026e0221, type: 3}
+  - {fileID: 21300000, guid: 4bbcc50c9920a45f19aaf626e7a8c59c, type: 3}
+  - {fileID: 21300000, guid: 3581680fef4f648cc9d5fd17a09d9d6a, type: 3}
+  - {fileID: 21300000, guid: a6bb0ee89f1054bb7820664bbd8772a9, type: 3}
+  - {fileID: 21300000, guid: baaeab92311a94614a65b9c137e54777, type: 3}
   weapon: {fileID: 0}
   pickWeaponClip: {fileID: 8300000, guid: bd5112458d23d48faa52fe82499275ed, type: 3}
   throwWeaponClip: {fileID: 8300000, guid: 524ddaeab25d84e5db2258e397f9f900, type: 3}
   speed: 50
   isAlive: 1
   deathClip: {fileID: 8300000, guid: 61f34fee662fe406994204e8723ee10c, type: 3}
+  _godMode: 0
 --- !u!212 &212354135419810610
 SpriteRenderer:
   m_ObjectHideFlags: 1
