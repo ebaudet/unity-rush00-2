@@ -11,7 +11,7 @@ public class PlayerWeaponInformation : MonoBehaviour
         weapon_single
     }
     public typeInfo info;
-    public player _player;
+    private player _player;
     protected Text text;
 
     // Use this for initialization
