@@ -9,7 +9,6 @@ public class Weapon : MonoBehaviour {
     public int ammo;
     public bool inf_ammo;
     public float fire_rate;
-    public float sound_propagation;
     public string weapon_number;
     public string weapon_name;
     public GameObject bullet;
@@ -19,7 +18,7 @@ public class Weapon : MonoBehaviour {
     private GameObject _bulletShooted;
     private AudioClip _no_ammo;
     private bool    _canRotate = false;
-
+    private float _sound_propagation;
 
 	private void Start ()
     {
@@ -28,6 +27,7 @@ public class Weapon : MonoBehaviour {
         weapon_name = GetComponent<SpriteRenderer>().sprite.name;
         weapon_number = Regex.Replace(GetComponent<SpriteRenderer>().sprite.name, "[^0-9]", "");
         _path = "Assets/Sprites/weapons/shoot/" + weapon_number + ".png";
+        _sound_propagation = gameObject.GetComponent<AudioSource>().maxDistance;
 	}
 	
 	private void Update ()
@@ -41,6 +41,10 @@ public class Weapon : MonoBehaviour {
         }
         
 	}
+    
+    public float getSoundPropagation() {
+        return _sound_propagation;
+    }
 
     public void fire(Vector3 pos, Quaternion player_rot)
     {

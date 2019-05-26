@@ -71,7 +71,7 @@ public class player : MonoBehaviour {
             weapon.fire(transform.position, transform.localRotation);
             Debug.Log("Raised event: OnGunShooted");
             if (OnGunShooted != null)
-                OnGunShooted(transform.position, weapon.sound_propagation);
+                OnGunShooted(transform.position, weapon.getSoundPropagation());
         }
         
         float vertical = 0;
