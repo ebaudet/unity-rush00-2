@@ -14,6 +14,7 @@ public class player : MonoBehaviour {
     public GameObject   weapon_sprite;
     public Weapon       weapon = null;
     public float        speed;
+    public bool         isAlive = true;
     
     private Camera      _cam;
     private Vector3     _direction;
@@ -63,9 +64,9 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	private void Update ()
     {
-        if (weapon && Input.GetMouseButtonDown(1))
+        if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(1))
             drop_weapon();
-        else if (weapon && Input.GetMouseButtonDown(0))
+        else if (Time.timeScale == 1 && weapon && Input.GetMouseButtonDown(0))
         {
             weapon.fire(transform.position, transform.localRotation);
             Debug.Log("Raised event: OnGunShooted");
