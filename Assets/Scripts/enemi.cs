@@ -148,9 +148,10 @@ public class enemi : MonoBehaviour
 		_index = 0;
 	}
 
-	public void emptyCheckPoint()
+	public void emptyCheckPoint(List<Transform> checkPoints)
 	{
-		_checkPoints = null;
+		if (checkPoints == null || checkPoints == _checkPoints)
+			_checkPoints = null;
 	}
 
 	public void patrolling()

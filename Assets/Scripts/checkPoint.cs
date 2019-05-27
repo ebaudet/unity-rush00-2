@@ -15,7 +15,7 @@ public class checkPoint : MonoBehaviour {
 	private void OnTriggerExit2D(Collider2D other) {
 		if (other.tag == "enemi") {
 			// Debug.Log("OnTriggerExit2D enemi" + transform.name);
-			other.gameObject.GetComponent<enemi>().emptyCheckPoint();
+			other.gameObject.GetComponent<enemi>().emptyCheckPoint(checkPoints);
 		}
 	}
 }
